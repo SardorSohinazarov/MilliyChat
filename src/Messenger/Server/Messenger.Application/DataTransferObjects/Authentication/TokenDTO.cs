@@ -3,6 +3,6 @@
     public record TokenDTO(
         string AccessToken,
         string RefreshToken,
-        DateTime expireDate
+        DateTime ExpireDate
     );
 }

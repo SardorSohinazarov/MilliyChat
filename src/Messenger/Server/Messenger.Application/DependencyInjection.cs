@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Messenger.Application.Services.Authentication;
+using Messenger.Application.Services.JWTTokenHandler;
+using Messenger.Application.Services.PasswordHasher;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Messenger.Application
 {
@@ -6,6 +9,10 @@ namespace Messenger.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+            services.AddScoped<IJWTTokenHandlerService, JWTTokenHandlerService>();
+
             services.AddHttpContextAccessor();
 
             return services;
