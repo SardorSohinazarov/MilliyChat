@@ -1,6 +1,6 @@
-﻿using Messenger.Application.Services.Authentication;
+﻿using Messenger.Application.Helpers.PasswordHasher;
+using Messenger.Application.Services.Authentication;
 using Messenger.Application.Services.JWTTokenHandler;
-using Messenger.Application.Services.PasswordHasher;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Messenger.Application

@@ -1,7 +1,7 @@
 ﻿using Messenger.Application.DataTransferObjects.Authentication;
+using Messenger.Application.Helpers.PasswordHasher;
 using Messenger.Application.Models;
 using Messenger.Application.Services.JWTTokenHandler;
-using Messenger.Application.Services.PasswordHasher;
 using Messenger.Domain.Exceptions;
 using Messenger.Infrastructure.Repositories.Users;
 using Microsoft.Extensions.Options;
