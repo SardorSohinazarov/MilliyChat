@@ -39,9 +39,7 @@ namespace Messenger.Application.Services.Authentication
                     includes: Array.Empty<string>());
 
             if (user is null)
-            {
                 throw new NotFoundException("User with given credentials not found");
-            }
 
             if (!_passwordHasherService.Verify(
                 hash: user.PasswordHash,
@@ -78,14 +76,10 @@ namespace Messenger.Application.Services.Authentication
                 .SelectByIdAsync(long.Parse(userId));
 
             if (!storageUser.RefreshToken.Equals(refreshTokenDto.RefreshToken))
-            {
                 throw new ValidationException("Refresh token is not valid");
-            }
 
             if (storageUser.RefreshTokenExpireDate <= DateTime.UtcNow)
-            {
                 throw new ValidationException("Refresh token has already been expired");
-            }
 
             var newAccessToken = _jWTTokenHandlerService
                 .GenerateAccessToken(storageUser);
@@ -106,9 +100,7 @@ namespace Messenger.Application.Services.Authentication
                     includes: Array.Empty<string>());
 
             if (user is not null)
-            {
                 throw new Exception("This phone number already registred");
-            }
 
             var salt = Guid.NewGuid().ToString("N");
             var passwordHash = _passwordHasherService.Encrypt(registerDTO.Password, salt);
