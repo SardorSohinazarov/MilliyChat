@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Messenger.Infrastructure.Repositories
+namespace Messenger.Infrastructure.Repositories.Base
 {
-    public class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, TKey>
-    where TEntity : class
+    public class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, TKey> where TEntity : class
     {
         private readonly ApplicationDbContext appDbContext;
 
@@ -14,25 +13,25 @@ namespace Messenger.Infrastructure.Repositories
         public async ValueTask<TEntity> InsertAsync(
             TEntity entity)
         {
-            var entityEntry = await this.appDbContext
-                .AddAsync<TEntity>(entity);
+            var entityEntry = await appDbContext
+                .AddAsync(entity);
 
-            await this.SaveChangesAsync();
+            await SaveChangesAsync();
 
             return entityEntry.Entity;
         }
 
         public IQueryable<TEntity> SelectAll() =>
-            this.appDbContext.Set<TEntity>();
+            appDbContext.Set<TEntity>();
 
         public async ValueTask<TEntity> SelectByIdAsync(TKey id) =>
-            await this.appDbContext.Set<TEntity>().FindAsync(id);
+            await appDbContext.Set<TEntity>().FindAsync(id);
 
         public async ValueTask<TEntity> SelectByIdWithDetailsAsync(
             Expression<Func<TEntity, bool>> expression,
             string[] includes = null)
         {
-            IQueryable<TEntity> entities = this.SelectAll();
+            IQueryable<TEntity> entities = SelectAll();
 
             foreach (var include in includes)
             {
@@ -44,27 +43,27 @@ namespace Messenger.Infrastructure.Repositories
 
         public async ValueTask<TEntity> UpdateAsync(TEntity entity)
         {
-            var entityEntry = this.appDbContext
-                .Update<TEntity>(entity);
+            var entityEntry = appDbContext
+                .Update(entity);
 
-            await this.SaveChangesAsync();
+            await SaveChangesAsync();
 
             return entityEntry.Entity;
         }
 
         public async ValueTask<TEntity> DeleteAsync(TEntity entity)
         {
-            var entityEntry = this.appDbContext
+            var entityEntry = appDbContext
                 .Set<TEntity>()
                 .Remove(entity);
 
-            await this.SaveChangesAsync();
+            await SaveChangesAsync();
 
             return entityEntry.Entity;
         }
 
         public async ValueTask<int> SaveChangesAsync() =>
-            await this.appDbContext
+            await appDbContext
                 .SaveChangesAsync();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Messenger.Infrastructure.Repositories
+namespace Messenger.Infrastructure.Repositories.Base
 {
     public interface IBaseRepository<TEntity, TKey>
     {
