@@ -4,8 +4,6 @@
         string FirstName,
         string PhoneNumber,
         string Password,
-        string? LastName,
-        string? Username,
-        string? Email
+        string? LastName
     );
 }

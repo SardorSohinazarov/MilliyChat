@@ -2,9 +2,10 @@
 using Messenger.Application.Helpers.PasswordHasher;
 using Messenger.Application.Models;
 using Messenger.Application.Services.JWTTokenHandler;
+using Messenger.Domain.Entities;
 using Messenger.Domain.Exceptions;
 using Messenger.Infrastructure.Repositories.Users;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,6 +15,7 @@ namespace Messenger.Application.Services.Authentication
 {
     public class AuthenticationService : IAuthenticationService
     {
+        private const int DEFAULT_EXPIRE_DATE_IN_MINUTES = 1440;
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasherService _passwordHasherService;
         private readonly IJWTTokenHandlerService _jWTTokenHandlerService;
@@ -23,12 +25,12 @@ namespace Messenger.Application.Services.Authentication
             IUserRepository userRepository,
             IPasswordHasherService passwordHasherService,
             IJWTTokenHandlerService jWTTokenHandlerService,
-            IOptions<JWTOption> jWTOptions)
+            IConfiguration configuration)
         {
             _userRepository = userRepository;
             _passwordHasherService = passwordHasherService;
             _jWTTokenHandlerService = jWTTokenHandlerService;
-            _jWTOptions = jWTOptions.Value;
+            _jWTOptions = configuration.GetSection("JwtSettings").Get<JWTOption>();
         }
 
         public async Task<TokenDTO> LoginAsync(LoginDTO loginDTO)
@@ -100,20 +102,32 @@ namespace Messenger.Application.Services.Authentication
                     includes: Array.Empty<string>());
 
             if (user is not null)
-                throw new Exception("This phone number already registred");
+                throw new ValidationException("This phone number already registred");
 
             var salt = Guid.NewGuid().ToString("N");
             var passwordHash = _passwordHasherService.Encrypt(registerDTO.Password, salt);
+            var refreshToken = Guid.NewGuid().ToString("N");
 
             //mapping
-            user.FirstName = registerDTO.FirstName;
-            user.PhoneNumber = registerDTO.PhoneNumber;
-            user.LastName = registerDTO.LastName;
-            user.Email = registerDTO.Email;
-            user.Username = registerDTO.Username;
-            user.PasswordHash = passwordHash;
+            user = new User()
+            {
+                FirstName = registerDTO.FirstName,
+                PhoneNumber = registerDTO.PhoneNumber,
+                LastName = registerDTO.LastName,
+                PasswordHash = passwordHash,
+                Salt = salt,
+                RefreshToken = refreshToken,
+                RefreshTokenExpireDate = DateTime.Now.AddMinutes(DEFAULT_EXPIRE_DATE_IN_MINUTES)
+            };
 
-            user = await _userRepository.InsertAsync(user);
+            try
+            {
+                user = await _userRepository.InsertAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException("user registration data is not valid");
+            }
 
             var accessToken = _jWTTokenHandlerService
                 .GenerateAccessToken(user);
