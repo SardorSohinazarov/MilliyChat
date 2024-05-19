@@ -6,8 +6,9 @@ namespace Messenger.Application.Services.Users
 {
     public interface IUserService
     {
-        IQueryable<UserViewModel> RetrieveUsers(QueryParameter queryParameter);
-        ValueTask<UserViewModel> RetrieveUserByIdAsync(long userId);
+        List<UserViewModel> RetrieveUsers(QueryParameter queryParameter);
+        List<UserViewModel> RetrieveByChatIdUsers(QueryParameter queryParameter, Guid chatId);
+        ValueTask<UserProfileViewModel> RetrieveUserByIdAsync(long userId);
         ValueTask<UserViewModel> ModifyUserAsync(UserModificationDTO userModificationDTO);
         ValueTask<UserViewModel> RemoveUserAsync(long userId);
     }

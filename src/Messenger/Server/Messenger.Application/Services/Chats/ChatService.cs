@@ -93,7 +93,7 @@ namespace Messenger.Application.Services.Chats
 
             var chats = _chatRepository.SelectAll()
                 .Include(x => x.Users)
-                .Where(x => x.Users.Select(x => x.Id).Contains(userId))
+                .Where(x => x.Users.Select(x => x.UserId).Contains(userId))
                 .ToPagedList(
                     httpContext: _httpContextAccessor.HttpContext,
                     pageSize: queryParameter.Page.Size,
@@ -112,7 +112,7 @@ namespace Messenger.Application.Services.Chats
 
             var chats = _chatRepository.SelectAll()
                 .Include(x => x.Users)
-                .Where(x => x.Messages.Count > 0 && x.Users.Select(x => x.Id).Contains(userId))
+                .Where(x => x.Messages.Count > 0 && x.Users.Select(x => x.UserId).Contains(userId))
                 .ToPagedList(
                     httpContext: _httpContextAccessor.HttpContext,
                     pageSize: queryParameter.Page.Size,
