@@ -18,27 +18,9 @@ namespace Messenger.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.5")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ChatUser", b =>
-                {
-                    b.Property<Guid>("ChatsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("UsersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("ChatsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ChatUser");
-                });
 
             modelBuilder.Entity("Messenger.Domain.Entities.Chat", b =>
                 {
@@ -90,7 +72,7 @@ namespace Messenger.Infrastructure.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "ChatId");
 
                     b.ToTable("ChatUsers");
                 });
@@ -186,21 +168,6 @@ namespace Messenger.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ChatUser", b =>
-                {
-                    b.HasOne("Messenger.Domain.Entities.Chat", null)
-                        .WithMany()
-                        .HasForeignKey("ChatsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Messenger.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Messenger.Domain.Entities.Chat", b =>
                 {
                     b.HasOne("Messenger.Domain.Entities.User", "Owner")
@@ -214,15 +181,15 @@ namespace Messenger.Infrastructure.Migrations
             modelBuilder.Entity("Messenger.Domain.Entities.ChatUser", b =>
                 {
                     b.HasOne("Messenger.Domain.Entities.Chat", "Chat")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Messenger.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Chats")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Chat");
@@ -259,6 +226,8 @@ namespace Messenger.Infrastructure.Migrations
             modelBuilder.Entity("Messenger.Domain.Entities.Chat", b =>
                 {
                     b.Navigation("Messages");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Messenger.Domain.Entities.Message", b =>
@@ -269,6 +238,8 @@ namespace Messenger.Infrastructure.Migrations
             modelBuilder.Entity("Messenger.Domain.Entities.User", b =>
                 {
                     b.Navigation("AuthorshipChats");
+
+                    b.Navigation("Chats");
 
                     b.Navigation("Messages");
                 });

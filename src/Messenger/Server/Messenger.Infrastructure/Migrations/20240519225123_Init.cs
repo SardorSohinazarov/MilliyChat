@@ -12,21 +12,6 @@ namespace Messenger.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Chats",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Chats", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -50,27 +35,24 @@ namespace Messenger.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatUser",
+                name: "Chats",
                 columns: table => new
                 {
-                    ChatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsersId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    OwnerId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChatUser", x => new { x.ChatsId, x.UsersId });
+                    table.PrimaryKey("PK_Chats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChatUser_Chats_ChatsId",
-                        column: x => x.ChatsId,
-                        principalTable: "Chats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ChatUser_Users_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_Chats_Users_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -78,7 +60,6 @@ namespace Messenger.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsBlocked = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -90,14 +71,12 @@ namespace Messenger.Infrastructure.Migrations
                         name: "FK_ChatUsers_Chats_ChatId",
                         column: x => x.ChatId,
                         principalTable: "Chats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ChatUsers_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -134,9 +113,9 @@ namespace Messenger.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatUser_UsersId",
-                table: "ChatUser",
-                column: "UsersId");
+                name: "IX_Chats_OwnerId",
+                table: "Chats",
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatUsers_ChatId",
@@ -180,9 +159,6 @@ namespace Messenger.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ChatUser");
-
             migrationBuilder.DropTable(
                 name: "ChatUsers");
 

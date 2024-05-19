@@ -15,8 +15,9 @@ namespace Messenger.Infrastructure.Configurations
                 .IsUnique();
 
             builder.HasMany(x => x.Chats)
-                .WithMany(x => x.Users)
-                .UsingEntity(nameof(ChatUser));
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(x => x.AuthorshipChats)
                 .WithOne(x => x.Owner)
