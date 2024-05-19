@@ -1,3 +1,4 @@
+using Messenger.API.Extensions;
 using Messenger.API.Hubs;
 using Messenger.API.Middlewares;
 using Messenger.Application;
@@ -17,7 +18,9 @@ builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerServices();
+
+builder.Services.AddJWTAuthentication(builder.Configuration);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
