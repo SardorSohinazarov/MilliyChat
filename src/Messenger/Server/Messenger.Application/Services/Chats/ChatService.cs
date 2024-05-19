@@ -42,9 +42,11 @@ namespace Messenger.Application.Services.Chats
             return chat.ToChatViewModel();
         }
 
-        public async ValueTask<ChatViewModel> RetrieveChatByIdAsync(Guid ChatId)
+        public async ValueTask<ChatViewModel> RetrieveChatByIdAsync(Guid chatId)
         {
-            var chat = await _chatRepository.SelectByIdAsync(ChatId);
+            var chat = await _chatRepository.SelectByIdWithDetailsAsync(
+                expression: x => x.Id == chatId,
+                includes: new string[] { nameof(Chat.Users) });
 
             if (chat is null)
                 throw new NotFoundException("chat not found");
@@ -152,7 +154,9 @@ namespace Messenger.Application.Services.Chats
 
         public async ValueTask<ChatViewModel> ClearChatMessagesAsync(Guid chatId)
         {
-            var chat = await _chatRepository.SelectByIdAsync(chatId);
+            var chat = await _chatRepository.SelectByIdWithDetailsAsync(
+                expression: x => x.Id == chatId,
+                includes: new string[] { nameof(Chat.Messages) });
 
             if (chat is null)
                 throw new NotFoundException("chat not found");

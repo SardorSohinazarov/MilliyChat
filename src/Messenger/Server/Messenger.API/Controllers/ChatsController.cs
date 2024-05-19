@@ -58,7 +58,7 @@ namespace Messenger.API.Controllers
 
         [HttpDelete("{chatId}/clear-chat")]
         public async Task<IActionResult> ClearChatMessagesAsync(Guid chatId)
-            => Ok();
+            => Ok(await _chatService.ClearChatMessagesAsync(chatId));
 
         [HttpPost("try-create-join/{chatId}")]
         public async Task<IActionResult> GetOrCreateChatAsync(Guid chatId)
