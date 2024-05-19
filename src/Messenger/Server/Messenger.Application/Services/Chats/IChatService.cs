@@ -6,10 +6,16 @@ namespace Messenger.Application.Services.Chats
 {
     public interface IChatService
     {
-        ValueTask<ChatViewModel> CreateChatAsync(ChatCreationDTO chatCreationDTO);
-        IQueryable<ChatViewModel> RetrieveChats(QueryParameter queryParameter);
+        ValueTask<Guid> CreatePersonalChatAsync(PersonalChatCreationDTO personalChatCreationDTO);
+        ValueTask<Guid> CreateGroupChatAsync(GroupChatCreationDTO groupChatCreationDTO);
+        ValueTask<Guid> CreateChannelChatAsync(ChannelChatCreationDTO channelChatCreationDTO);
+        List<ChatViewModel> RetrieveChats(QueryParameter queryParameter);
+        List<ChatViewModel> RetrieveActiveChats(QueryParameter queryParameter);
+        List<ChatViewModel> RetrieveUserChats(QueryParameter queryParameter);
+        List<ChatViewModel> RetrieveUserActiveChats(QueryParameter queryParameter);
         ValueTask<ChatViewModel> RetrieveChatByIdAsync(Guid ChatId);
         ValueTask<ChatViewModel> ModifyChatAsync(ChatModificationDTO chatModificationDTO);
         ValueTask<ChatViewModel> RemoveChatAsync(Guid ChatId);
+        ValueTask<ChatViewModel> ClearChatMessagesAsync(Guid chatId);
     }
 }

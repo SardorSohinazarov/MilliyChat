@@ -7,7 +7,7 @@
 
     public class PaginationParam
     {
-        public int Size { get; set; } = 10;
+        public int Size { get; set; } = 100;
         public int Index { get; set; } = 1;
     }
 }
