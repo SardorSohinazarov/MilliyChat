@@ -11,7 +11,7 @@ namespace Messenger.Domain.Entities
         public string? Email { get; set; }
         public string? PhotoPath { get; set; }
         public virtual List<Chat> AuthorshipChats { get; set; }
-        public virtual List<Chat> Chats { get; set; }
+        public virtual IEnumerable<ChatUser> Chats { get; set; }
         public virtual List<Message> Messages { get; set; }
 
         public string PasswordHash { get; set; }

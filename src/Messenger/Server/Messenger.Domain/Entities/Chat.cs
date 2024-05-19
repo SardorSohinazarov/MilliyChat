@@ -11,7 +11,7 @@ namespace Messenger.Domain.Entities
         public long? OwnerId { get; set; }
 
         public virtual User Owner { get; set; }
-        public virtual List<User> Users { get; set; }
+        public virtual IEnumerable<ChatUser> Users { get; set; }
         public virtual List<Message> Messages { get; set; }
     }
 }
