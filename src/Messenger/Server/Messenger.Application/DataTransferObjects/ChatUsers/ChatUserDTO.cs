@@ -1,6 +1,6 @@
 ﻿namespace Messenger.Application.DataTransferObjects.ChatUsers
 {
-    public class ChatUserCreationDTO
+    public class ChatUserDTO
     {
         public Guid ChatId { get; set; }
         public long UserId { get; set; }
