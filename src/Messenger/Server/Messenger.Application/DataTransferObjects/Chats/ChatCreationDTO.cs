@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Messenger.Domain.Enums;
 
 namespace Messenger.Application.DataTransferObjects.Chats
 {
-    public class ChatCreationDTO
-    {
-    }
+    public record ChatCreationDTO(
+        string Link,
+        string? Title,
+        ChatType Type
+    );
 }
