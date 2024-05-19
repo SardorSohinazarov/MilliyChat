@@ -1,7 +1,7 @@
 ﻿using Messenger.Application.Helpers.PasswordHasher;
 using Messenger.Application.Services.Authentication;
 using Messenger.Application.Services.Chats;
-using Messenger.Application.Services.ChatUser;
+using Messenger.Application.Services.ChatUsers;
 using Messenger.Application.Services.JWTTokenHandler;
 using Messenger.Application.Services.Messages;
 using Messenger.Application.Services.Users;

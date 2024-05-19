@@ -13,7 +13,7 @@ namespace Messenger.Application.Mappers
                 Type = chat.Type,
                 Title = chat.Title,
                 Link = chat.Link,
-                MembersCount = chat.Users is null ? 0 : chat.Users.Count,
+                MembersCount = chat.Users is null ? 0 : chat.Users.Select(x => x.User).ToList().Count,
                 OwnerId = chat.OwnerId,
                 CreatedAt = chat.CreatedAt,
             };
@@ -29,6 +29,38 @@ namespace Messenger.Application.Mappers
                 Sender = message.Sender
             };
         }
-    }
 
+        public static UserViewModel ToUserViewModel(this User user)
+        {
+            return new UserViewModel()
+            {
+                Id = user.Id,
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
+                Email = user.Email,
+                PhotoPath = user.PhotoPath,
+            };
+        }
+
+        public static UserProfileViewModel ToUserProfileViewModel(this User user)
+        {
+            return new UserProfileViewModel()
+            {
+                Id = user.Id,
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
+                Email = user.Email,
+                PhotoPath = user.PhotoPath,
+                CreatedAt = user.CreatedAt,
+
+                Messages = user.Messages,
+                Chats = user.Chats.Select(x => x.Chat).ToList(),
+                AuthorshipChats = user.AuthorshipChats,
+            };
+        }
+    }
 }
