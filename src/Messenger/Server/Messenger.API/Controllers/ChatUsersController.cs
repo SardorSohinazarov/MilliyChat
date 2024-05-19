@@ -24,11 +24,11 @@ namespace Messenger.API.Controllers
 
         [HttpPost("block-chat-member")]
         public async Task<IActionResult> UpdateChatUserAsync()
-          => Ok();
+            => Ok();
 
         [HttpPost("block-chat/{chatId}")]
         public async Task<IActionResult> UpdateChatAsync(Guid chatId)
-        => Ok();
+            => Ok();
 
         [HttpDelete("leave-chat/{chatId}")]
         public async Task<IActionResult> DeleteChatUser(Guid chatId)

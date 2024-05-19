@@ -15,7 +15,7 @@ namespace Messenger.Infrastructure
             //sqlserver dbcontext
             services.AddDbContextPool<ApplicationDbContext>(options =>
                 options
-                .UseLazyLoadingProxies()
+                /*.UseLazyLoadingProxies()*/
                 .UseSqlServer(configuration.GetConnectionString("Default")));
 
             //repositories

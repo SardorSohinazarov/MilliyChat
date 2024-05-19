@@ -16,7 +16,11 @@ builder.Services.AddResponseCompression(opts =>
 builder.Services.AddSignalR();
 #endregion
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(x =>
+{
+    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerServices();
 
