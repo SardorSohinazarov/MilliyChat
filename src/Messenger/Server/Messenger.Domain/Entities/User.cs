@@ -10,6 +10,7 @@ namespace Messenger.Domain.Entities
         public string? Username { get; set; }
         public string? Email { get; set; }
         public string? PhotoPath { get; set; }
+        public virtual List<Chat> AuthorshipChats { get; set; }
         public virtual List<Chat> Chats { get; set; }
         public virtual List<Message> Messages { get; set; }
 
