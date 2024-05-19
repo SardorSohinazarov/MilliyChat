@@ -17,6 +17,11 @@ namespace Messenger.Infrastructure.Configurations
             builder.HasMany(x => x.Chats)
                 .WithMany(x => x.Users)
                 .UsingEntity(nameof(ChatUser));
+
+            builder.HasMany(x => x.AuthorshipChats)
+                .WithOne(x => x.Owner)
+                .HasForeignKey(x => x.OwnerId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

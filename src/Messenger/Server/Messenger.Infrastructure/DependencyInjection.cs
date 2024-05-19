@@ -13,7 +13,7 @@ namespace Messenger.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             //sqlserver dbcontext
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContextPool<ApplicationDbContext>(options =>
                 options
                 .UseLazyLoadingProxies()
                 .UseSqlServer(configuration.GetConnectionString("Default")));
