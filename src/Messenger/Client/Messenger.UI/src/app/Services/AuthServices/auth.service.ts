@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RegisterDTO } from '../Interfaces/Auth/register-dto';
-import { TokenDTO } from '../Interfaces/Auth/token-dto';
-import { LoginDTO } from '../Interfaces/Auth/login-dto';
+import { RegisterDTO } from '../../Interfaces/Auth/register-dto';
+import { TokenDTO } from '../../Interfaces/Auth/token-dto';
+import { LoginDTO } from '../../Interfaces/Auth/login-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +30,11 @@ export class AuthService {
   }
 
   getAccessToken(){
-    return window.localStorage.getItem('accessToken');
+    return localStorage.getItem('accessToken');
   }
 
   getRefreshToken(){
-    return window.localStorage.getItem('refreshToken');
+    return localStorage.getItem('refreshToken');
   }
 
   storeToken(token:TokenDTO){
