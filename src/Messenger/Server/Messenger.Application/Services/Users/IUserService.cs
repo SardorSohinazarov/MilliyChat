@@ -9,6 +9,7 @@ namespace Messenger.Application.Services.Users
         List<UserViewModel> RetrieveUsers(QueryParameter queryParameter);
         List<UserViewModel> RetrieveByChatIdUsers(QueryParameter queryParameter, Guid chatId);
         ValueTask<UserProfileViewModel> RetrieveUserByIdAsync(long userId);
+        ValueTask<UserViewModel> RetrieveUserByIdAsync();
         ValueTask<UserViewModel> ModifyUserAsync(UserModificationDTO userModificationDTO);
         ValueTask<UserViewModel> RemoveUserAsync(long userId);
     }

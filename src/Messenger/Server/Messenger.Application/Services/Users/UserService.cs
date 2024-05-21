@@ -4,9 +4,11 @@ using Messenger.Application.Mappers;
 using Messenger.Application.Models;
 using Messenger.Application.ViewModels;
 using Messenger.Domain.Entities;
+using Messenger.Domain.Exceptions;
 using Messenger.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Messenger.Application.Services.Users
 {
@@ -69,6 +71,32 @@ namespace Messenger.Application.Services.Users
             );
 
             return user.ToUserProfileViewModel();
+        }
+
+        public async ValueTask<UserViewModel> RetrieveUserByIdAsync()
+        {
+            var userId = GetUserIdFromHttpContext();
+
+            var user = await _userRepository.SelectByIdWithDetailsAsync(
+                expression: x => x.Id == userId,
+                includes: new string[] {
+                    nameof(User.Chats),
+                    nameof(User.AuthorshipChats),
+                    nameof(User.Messages)
+                }
+            );
+
+            return user.ToUserViewModel();
+        }
+
+        private long GetUserIdFromHttpContext()
+        {
+            var stringValue = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (stringValue is null)
+                throw new ValidationException("Can not get userId from HttpContext");
+
+            return long.Parse(stringValue);
         }
     }
 }
