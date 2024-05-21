@@ -1,6 +1,4 @@
-﻿using Messenger.Domain.Entities;
-
-namespace Messenger.Application.ViewModels
+﻿namespace Messenger.Application.ViewModels
 {
     public class MessageViewModel
     {
@@ -8,7 +6,7 @@ namespace Messenger.Application.ViewModels
         public string Text { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public User Sender { get; set; }
-        public Message Parent { get; set; }
+        public UserViewModel? Sender { get; set; }
+        public MessageViewModel? Parent { get; set; }
     }
 }

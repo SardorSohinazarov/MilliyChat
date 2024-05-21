@@ -1,6 +1,4 @@
-﻿using Messenger.Domain.Entities;
-
-namespace Messenger.Application.ViewModels
+﻿namespace Messenger.Application.ViewModels
 {
     public class UserProfileViewModel
     {
@@ -11,9 +9,8 @@ namespace Messenger.Application.ViewModels
         public string? Username { get; set; }
         public string? Email { get; set; }
         public string? PhotoPath { get; set; }
-        public List<Chat> AuthorshipChats { get; set; }
-        public List<Chat> Chats { get; set; }
-        public List<Message> Messages { get; set; }
+        public List<ChatViewModel> AuthorshipChats { get; set; }
+        public List<MessageViewModel> Messages { get; set; }
         public DateTime? CreatedAt { get; set; }
     }
 }
