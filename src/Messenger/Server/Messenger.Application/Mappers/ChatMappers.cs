@@ -7,6 +7,8 @@ namespace Messenger.Application.Mappers
     {
         public static ChatViewModel ToChatViewModel(this Chat chat)
         {
+            if (chat is null) throw new ArgumentNullException(nameof(chat));
+
             return new ChatViewModel()
             {
                 Id = chat.Id,
@@ -25,8 +27,9 @@ namespace Messenger.Application.Mappers
             {
                 Id = message.Id,
                 Text = message.Text,
-                Parent = message.Parent,
-                Sender = message.Sender
+                CreatedAt = message.CreatedAt,
+                Parent = message.Parent is null ? null : message.Parent.ToMessageViewModel(),
+                Sender = message.Sender.ToUserViewModel(),
             };
         }
 
@@ -57,9 +60,8 @@ namespace Messenger.Application.Mappers
                 PhotoPath = user.PhotoPath,
                 CreatedAt = user.CreatedAt,
 
-                Messages = user.Messages,
-                Chats = user.Chats.Select(x => x.Chat).ToList(),
-                AuthorshipChats = user.AuthorshipChats,
+                Messages = user.Messages.Select(x => x.ToMessageViewModel()).ToList(),
+                AuthorshipChats = user.AuthorshipChats.Select(x => x.ToChatViewModel()).ToList(),
             };
         }
     }
