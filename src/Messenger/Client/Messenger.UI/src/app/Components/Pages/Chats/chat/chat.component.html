@@ -1,0 +1,9 @@
+@for (message of messages; track message) {
+    <app-text-message class="my-3" [message]="message" [isMine]="userInfo?.id==message.sender?.id?true:false"></app-text-message>
+}
+    
+  <form (ngSubmit)="sendMessage()">
+    <input type="text" [(ngModel)]="inputText" name="message" placeholder="Message">
+    <button type="submit">Send</button>
+  </form>
+  
