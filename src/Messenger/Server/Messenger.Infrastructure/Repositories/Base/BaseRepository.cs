@@ -10,8 +10,7 @@ namespace Messenger.Infrastructure.Repositories.Base
         public BaseRepository(ApplicationDbContext appDbContext) =>
             this.appDbContext = appDbContext;
 
-        public async ValueTask<TEntity> InsertAsync(
-            TEntity entity)
+        public async ValueTask<TEntity> InsertAsync(TEntity entity)
         {
             var entityEntry = await appDbContext
                 .AddAsync(entity);
@@ -63,7 +62,6 @@ namespace Messenger.Infrastructure.Repositories.Base
         }
 
         public async ValueTask<int> SaveChangesAsync() =>
-            await appDbContext
-                .SaveChangesAsync();
+            await appDbContext.SaveChangesAsync();
     }
 }

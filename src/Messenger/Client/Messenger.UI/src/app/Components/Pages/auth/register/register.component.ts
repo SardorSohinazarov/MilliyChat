@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../Services/AuthServices/auth.service';
+import { UserAPIService } from '../../../../Services/UserAPIServices/user-api.service';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,7 @@ export class RegisterComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService:AuthService,
+    private userService:UserAPIService,
     private router:Router
   ) { }
 
@@ -41,6 +43,16 @@ export class RegisterComponent {
           console.log(response);
 
           this.authService.storeToken(response)
+
+          this.userService.getUserInfoFromAPI().subscribe({
+            next: userInfo => {
+              localStorage.setItem('userProfile', JSON.stringify(userInfo));
+              this.router.navigate(['/chats']);
+            },
+            error: error => {
+              console.error('Profil ma\'lumotlarini olishda xato:', error);
+            }
+          });
 
           this.router.navigate(['/chats'])
         },

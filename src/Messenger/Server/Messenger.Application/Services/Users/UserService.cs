@@ -24,14 +24,10 @@ namespace Messenger.Application.Services.Users
         }
 
         public ValueTask<UserViewModel> ModifyUserAsync(UserModificationDTO userModificationDTO)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public ValueTask<UserViewModel> RemoveUserAsync(long userId)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public List<UserViewModel> RetrieveUsers(QueryParameter queryParameter)
         {

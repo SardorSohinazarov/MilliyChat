@@ -52,9 +52,7 @@ namespace Messenger.Application.Services.Messages
         }
 
         public ValueTask<MessageViewModel> ModifyMessageAsync(MessageModificationDTO messageModificationDTO)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public async ValueTask<MessageViewModel> RemoveMessageAsync(Guid messageId)
         {

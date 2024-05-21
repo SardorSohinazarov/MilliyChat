@@ -8,7 +8,8 @@ namespace Messenger.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<ChatUser> builder)
         {
-            builder.HasIndex(x => new { x.UserId, x.ChatId });
+            builder.HasIndex(x => new { x.UserId, x.ChatId })
+                .IsUnique();
         }
     }
 }

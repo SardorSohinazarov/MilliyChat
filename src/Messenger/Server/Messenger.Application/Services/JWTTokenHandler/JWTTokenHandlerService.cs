@@ -45,10 +45,9 @@ namespace Messenger.Application.Services.JWTTokenHandler
         {
             byte[] bytes = new byte[64];
 
-            using var randomGenerator =
-                RandomNumberGenerator.Create();
-
+            using var randomGenerator = RandomNumberGenerator.Create();
             randomGenerator.GetBytes(bytes);
+
             return Convert.ToBase64String(bytes);
         }
     }

@@ -14,5 +14,5 @@ export class TextMessageComponent {
   @Input() message!:MessageDTO;
   @Input({required:true}) isMine!:boolean;
 
-  constructor(private datePipe: DatePipe) { }
+  constructor() { }
 }
