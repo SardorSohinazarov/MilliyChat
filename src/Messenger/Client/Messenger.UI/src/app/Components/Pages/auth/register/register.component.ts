@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../../Services/auth.service';
+import { AuthService } from '../../../../Services/AuthServices/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -42,7 +42,7 @@ export class RegisterComponent {
 
           this.authService.storeToken(response)
 
-          this.router.navigate(['/chat'])
+          this.router.navigate(['/chats'])
         },
         error: error => {
           console.error('Xatolik yuz berdi:', error);
