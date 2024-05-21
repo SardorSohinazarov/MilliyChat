@@ -17,6 +17,10 @@ namespace Messenger.API.Controllers
         public async Task<IActionResult> GetUser(long userId)
             => Ok(await _userService.RetrieveUserByIdAsync(userId));
 
+        [HttpGet("user-info")]
+        public async Task<IActionResult> GetUser()
+            => Ok(await _userService.RetrieveUserByIdAsync());
+
         [HttpGet]
         public IActionResult GetUsers([FromQuery] QueryParameter parameter)
             => Ok(_userService.RetrieveUsers(parameter));

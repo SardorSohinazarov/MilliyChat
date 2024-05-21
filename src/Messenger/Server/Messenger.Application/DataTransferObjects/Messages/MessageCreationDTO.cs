@@ -1,8 +1,10 @@
 ﻿namespace Messenger.Application.DataTransferObjects.Messages
 {
-    public record MessageCreationDTO(
-        Guid? ParentId,
-        Guid ChatId,
-        string Text
-    );
+    public class MessageCreationDTO
+    {
+        public long SenderId { get; set; }
+        public Guid? ParentId { get; set; }
+        public Guid ChatId { get; set; }
+        public string Text { get; set; }
+    }
 }
