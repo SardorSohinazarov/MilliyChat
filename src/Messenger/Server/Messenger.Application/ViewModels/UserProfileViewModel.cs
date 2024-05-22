@@ -10,7 +10,6 @@
         public string? Email { get; set; }
         public string? PhotoPath { get; set; }
         public List<ChatViewModel> AuthorshipChats { get; set; }
-        public List<MessageViewModel> Messages { get; set; }
         public DateTime? CreatedAt { get; set; }
     }
 }
