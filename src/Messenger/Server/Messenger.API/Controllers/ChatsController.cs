@@ -60,8 +60,8 @@ namespace Messenger.API.Controllers
         public async Task<IActionResult> ClearChatMessagesAsync(Guid chatId)
             => Ok(await _chatService.ClearChatMessagesAsync(chatId));
 
-        [HttpPost("try-create-join/{chatId}")]
-        public async Task<IActionResult> GetOrCreateChatAsync(Guid chatId)
-            => throw new Exception();
+        [HttpGet("get-create-join/{userId}")]
+        public async Task<IActionResult> GetOrCreateChatAsync(long userId)
+            => Ok(await _chatService.GetOrCreateAsync(userId));
     }
 }

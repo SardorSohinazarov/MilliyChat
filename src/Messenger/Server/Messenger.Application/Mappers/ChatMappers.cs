@@ -5,6 +5,22 @@ namespace Messenger.Application.Mappers
 {
     public static class ChatMapper
     {
+        public static ChatViewModel ToChatViewModel(this Chat chat, long userId)
+        {
+            if (chat is null) throw new ArgumentNullException(nameof(chat));
+
+            return new ChatViewModel()
+            {
+                Id = chat.Id,
+                Type = chat.Type,
+                Title = chat.Title is not null ? chat.Title : chat.Users.FirstOrDefault(x => x.UserId != userId).User.FirstName,
+                Link = chat.Link,
+                MembersCount = chat.Users is null ? 0 : chat.Users.Select(x => x.User).ToList().Count,
+                OwnerId = chat.OwnerId,
+                CreatedAt = chat.CreatedAt,
+            };
+        }
+
         public static ChatViewModel ToChatViewModel(this Chat chat)
         {
             if (chat is null) throw new ArgumentNullException(nameof(chat));
@@ -60,7 +76,6 @@ namespace Messenger.Application.Mappers
                 PhotoPath = user.PhotoPath,
                 CreatedAt = user.CreatedAt,
 
-                Messages = user.Messages.Select(x => x.ToMessageViewModel()).ToList(),
                 AuthorshipChats = user.AuthorshipChats.Select(x => x.ToChatViewModel()).ToList(),
             };
         }
