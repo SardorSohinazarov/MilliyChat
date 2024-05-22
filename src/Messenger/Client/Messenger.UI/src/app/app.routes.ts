@@ -6,6 +6,8 @@ import path from 'path';
 import { title } from 'process';
 import { combineLatest } from 'rxjs';
 import { ChatListComponent } from './Components/Pages/Chats/chat-list/chat-list.component';
+import { UserListComponent } from './Components/Pages/Users/user-list/user-list.component';
+import { UserProfileComponent } from './Components/Pages/Users/user-profile/user-profile.component';
 
 const projectName:string = 'Milliy chat';
 export const routes: Routes = [
@@ -25,6 +27,14 @@ export const routes: Routes = [
             {path:'',title:`Chats | ${projectName}`,component:ChatListComponent },
             {path:':chatId',title:`Chat | ${projectName}`,component:ChatComponent },
             {path:'**',redirectTo:'/chats',pathMatch:'full'}
+        ]
+    },
+    {
+        path:'users',
+        title:`Users | ${projectName}`,
+        children:[
+            {path:'',title:`Users | ${projectName}`,component:UserListComponent },
+            {path:':userId',title:`User | ${projectName}`,component:UserProfileComponent },
         ]
     },
     {path:'',redirectTo:'/chats',pathMatch:'full'},
