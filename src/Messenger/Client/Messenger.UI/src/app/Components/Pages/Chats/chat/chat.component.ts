@@ -1,14 +1,16 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { MessageAPIService } from '../../../../Services/MessagesAPIServices/message-api.service';
 import { MessageDTO } from '../../../../Interfaces/Message/message-dto';
-import { UserInfo } from 'os';
 import { MessageCreationDTO } from '../../../../Interfaces/Message/message-creation-dto';
 import { AuthService } from '../../../../Services/AuthServices/auth.service';
 import { TextMessageComponent } from '../../../Messages/text-message/text-message.component';
 import { UserViewModel } from '../../../../Interfaces/Users/user-view-model';
+import { Chat } from '../../../../Interfaces/chat';
+import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-chat',
@@ -18,26 +20,28 @@ import { UserViewModel } from '../../../../Interfaces/Users/user-view-model';
     TextMessageComponent
   ],
   templateUrl: './chat.component.html',
-  styleUrl: './chat.component.scss'
+  styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit{
+export class ChatComponent implements OnInit {
 
   private connection: HubConnection;
-  public messages:MessageDTO[] = [];
+  public messages: MessageDTO[] = [];
   public inputText: string = '';
-  private chatId:string = '';
-  public userInfo:UserViewModel|null = null;
+  private chatId: string = '';
+  public userInfo: UserViewModel | null = null;
+  public chat!:Chat;
 
   constructor(
-    private activatedRoute:ActivatedRoute,
-    private messageAPIService:MessageAPIService,
-    private authService:AuthService
-  ){
+    private activatedRoute: ActivatedRoute,
+    private messageAPIService: MessageAPIService,
+    private chatAPIService:ChatAPIService,
+    private authService: AuthService
+  ) {
     this.connection = new HubConnectionBuilder()
       .withUrl('https://localhost:7031/chathub',
-      {
-        accessTokenFactory:() => this.authService.getAccessToken()!
-      })
+        {
+          accessTokenFactory: () => this.authService.getAccessToken()!
+        })
       .configureLogging(LogLevel.Information)
       .build();
   }
@@ -47,17 +51,12 @@ export class ChatComponent implements OnInit{
     console.log('chatId:' + this.chatId);
 
     this.loadUser();
-    console.log(this.userInfo)
 
-    this.messageAPIService.getChatMessages(this.chatId).subscribe(
-      (messages:MessageDTO[]) =>{
-        console.log(messages)
-        this.messages = messages
-      }
-    )
+    this.getChat();
+    this.getMessages();
 
     this.connection.on('ReceiveMessage', (message) => {
-      console.log("message keldi:"+message);
+      console.log("message keldi:" + message);
       this.messages.push(message);
     });
 
@@ -73,22 +72,45 @@ export class ChatComponent implements OnInit{
     const serializedData = localStorage.getItem('userProfile');
     if (serializedData) {
       this.userInfo = JSON.parse(serializedData) as UserViewModel;
-      console.log(this.userInfo)
+      console.log(this.userInfo);
     }
+  }
+
+  getMessages(){
+    this.messageAPIService.getChatMessages(this.chatId).subscribe(
+      (messages: MessageDTO[]) => {
+        console.log(messages);
+        this.messages = messages;
+      },
+      error =>{
+        console.log('Messagelarni yuklashda xatolik:' + error.message)
+      }
+    );
+  }
+
+  getChat(){
+    this.chatAPIService.getChat(this.chatId).subscribe(
+      (result:Chat)=>{
+        this.chat = result;
+      },
+      error =>{
+        console.log(error.message);
+      }
+    )
   }
 
   async sendMessage() {
     if (!this.inputText) return;
-    
-    let messageCreation:MessageCreationDTO ={
-      chatId:this.chatId,
-      text:this.inputText,
-      parentId:null
-    }
 
-    console.log(messageCreation)
+    let messageCreation: MessageCreationDTO = {
+      chatId: this.chatId,
+      text: this.inputText,
+      parentId: null
+    };
 
-    await this.connection.invoke('SendMessage',messageCreation);
+    console.log(messageCreation);
+
+    await this.connection.invoke('SendMessage', messageCreation);
     this.inputText = '';
   }
 }
