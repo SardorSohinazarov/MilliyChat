@@ -31,7 +31,10 @@ namespace Messenger.Application.Services.Users
 
         public List<UserViewModel> RetrieveUsers(QueryParameter queryParameter)
         {
+            var userId = GetUserIdFromHttpContext();
+
             var users = _userRepository.SelectAll()
+                .Where(x => x.Id != userId)
                 .ToPagedList(
                     httpContext: _httpContextAccessor.HttpContext,
                     pageSize: queryParameter.Page.Size,

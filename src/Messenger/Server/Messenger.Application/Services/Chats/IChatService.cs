@@ -17,5 +17,6 @@ namespace Messenger.Application.Services.Chats
         ValueTask<ChatViewModel> ModifyChatAsync(ChatModificationDTO chatModificationDTO);
         ValueTask<ChatViewModel> RemoveChatAsync(Guid ChatId);
         ValueTask<ChatViewModel> ClearChatMessagesAsync(Guid chatId);
+        ValueTask<Guid> GetOrCreateAsync(long userId);
     }
 }

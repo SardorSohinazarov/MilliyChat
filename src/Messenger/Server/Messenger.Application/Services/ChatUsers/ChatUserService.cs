@@ -27,6 +27,13 @@ namespace Messenger.Application.Services.ChatUsers
         public async ValueTask<ChatUser> AddChatMemberAsync(ChatUserCreationDTO chatUserCreationDTO)
             => await CreateChatUserAsync(chatUserCreationDTO);
 
+        public async ValueTask<ChatUser> CreateChatUserAsync(ChatUserCreationDTO chatUserCreationDTO)
+        {
+            var chatUser = chatUserCreationDTO.Adapt<ChatUser>();
+
+            return await _chatUserRepository.InsertAsync(chatUser);
+        }
+
         public async ValueTask<ChatUser> BlockChatAsync(Guid chatId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -46,13 +53,6 @@ namespace Messenger.Application.Services.ChatUsers
             chatUserModificationDTO.IsBlocked = true;
 
             return await ModifyChatUserAsync(chatUserModificationDTO);
-        }
-
-        public async ValueTask<ChatUser> CreateChatUserAsync(ChatUserCreationDTO chatUserCreationDTO)
-        {
-            var chatUser = chatUserCreationDTO.Adapt<ChatUser>();
-
-            return await _chatUserRepository.InsertAsync(chatUser);
         }
 
         public List<ChatUser> GetChatUsers(QueryParameter queryParameter)

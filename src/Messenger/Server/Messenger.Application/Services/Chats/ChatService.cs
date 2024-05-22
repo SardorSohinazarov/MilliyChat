@@ -8,6 +8,7 @@ using Messenger.Domain.Entities;
 using Messenger.Domain.Enums;
 using Messenger.Domain.Exceptions;
 using Messenger.Infrastructure.Repositories.Chats;
+using Messenger.Infrastructure.Repositories.ChatUsers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -19,15 +20,18 @@ namespace Messenger.Application.Services.Chats
         private readonly IChatRepository _chatRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPasswordHasherService _passwordHasher;
+        private readonly IChatUserRepository _chatUserRepository;
 
         public ChatService(
             IChatRepository chatRepository,
             IHttpContextAccessor httpContextAccessor,
-            IPasswordHasherService passwordHasher)
+            IPasswordHasherService passwordHasher,
+            IChatUserRepository chatUserRepository)
         {
             _chatRepository = chatRepository;
             _httpContextAccessor = httpContextAccessor;
             _passwordHasher = passwordHasher;
+            _chatUserRepository = chatUserRepository;
         }
 
         public async ValueTask<ChatViewModel> RemoveChatAsync(Guid ChatId)
@@ -52,6 +56,15 @@ namespace Messenger.Application.Services.Chats
                 throw new NotFoundException("chat not found");
 
             return chat.ToChatViewModel();
+        }
+
+        public async ValueTask<Chat> RetrieveChatByLinkAsync(string link)
+        {
+            var chat = await _chatRepository.SelectByIdWithDetailsAsync(
+                expression: x => x.Link == link,
+                includes: new string[] { nameof(Chat.Users) });
+
+            return chat;
         }
 
         public List<ChatViewModel> RetrieveChats(QueryParameter queryParameter)
@@ -106,13 +119,17 @@ namespace Messenger.Application.Services.Chats
             return chatList;
         }
 
+        //one-one chatlarni oldin yozishgan bo'lsa (activelashgan bo'lsa) oladi
+        //group va channel larni farqi yo'q
         public List<ChatViewModel> RetrieveUserActiveChats(QueryParameter queryParameter)
         {
             var userId = GetUserIdFromHttpContext();
 
             var chats = _chatRepository.SelectAll()
                 .Include(x => x.Users)
-                .Where(x => x.Messages.Count > 0 && x.Users.Select(x => x.UserId).Contains(userId))
+                .ThenInclude(x => x.User)
+                .Where(x => ((x.Messages.Count > 0 && x.Users.Count() == 2 && x.Type == ChatType.OneToOne) || (x.Type != ChatType.OneToOne))
+                            && x.Users.Select(x => x.UserId).Contains(userId))
                 .ToPagedList(
                     httpContext: _httpContextAccessor.HttpContext,
                     pageSize: queryParameter.Page.Size,
@@ -120,7 +137,7 @@ namespace Messenger.Application.Services.Chats
                 );
 
             var chatList = chats
-                .Select(x => x.ToChatViewModel()).ToList();
+                .Select(x => x.ToChatViewModel(userId)).ToList();
 
             return chatList;
         }
@@ -133,6 +150,13 @@ namespace Messenger.Application.Services.Chats
             var userId = GetUserIdFromHttpContext();
             var link = CreateLink(personalChatCreationDTO.userId, userId);
 
+            return await CreateChatAsync(
+                chatType: ChatType.OneToOne,
+                link: link);
+        }
+
+        public async ValueTask<Guid> CreatePersonalChatAsync(string link)
+        {
             return await CreateChatAsync(
                 chatType: ChatType.OneToOne,
                 link: link);
@@ -224,6 +248,56 @@ namespace Messenger.Application.Services.Chats
                 throw new ValidationException("Can not get userId from HttpContext");
 
             return long.Parse(stringValue);
+        }
+
+        public async ValueTask<Guid> GetOrCreateAsync(long userId)
+        {
+            var currentUserId = GetUserIdFromHttpContext();
+
+            if (userId == currentUserId)
+                throw new ValidationException("Cannaot be equal user ids");
+
+            var link = CreateLink(currentUserId, userId);
+
+            var chat = await RetrieveChatByLinkAsync(link);
+
+            if (chat is not null)
+                return chat.Id;
+
+            return await CreatePersonalChatAndAddUsersAsync(link, userId, currentUserId);
+        }
+
+        public async ValueTask<Guid> CreatePersonalChatAndAddUsersAsync(string link, long user1Id, long user2Id)
+        {
+            var chatId = await CreatePersonalChatAsync(link);
+
+            try
+            {
+                await _chatUserRepository.InsertAsync(new ChatUser()
+                {
+                    ChatId = chatId,
+                    UserId = user1Id
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Chatga userni qo'shishda xato bo'ldi");
+            }
+
+            try
+            {
+                await _chatUserRepository.InsertAsync(new ChatUser()
+                {
+                    ChatId = chatId,
+                    UserId = user2Id
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Chatga userni qo'shishda xato bo'ldi");
+            }
+
+            return chatId;
         }
     }
 }
