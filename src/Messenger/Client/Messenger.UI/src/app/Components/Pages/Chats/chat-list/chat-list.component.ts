@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.service';
-import { Chat } from '../../../../Interfaces/chat';
+import { Chat } from '../../../../Interfaces/Chat/chat';
 import { error } from 'console';
 import { RouterLink } from '@angular/router';
 

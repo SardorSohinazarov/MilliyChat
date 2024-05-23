@@ -19,7 +19,7 @@ export class LoginComponent {
   loginForm: FormGroup = this.formBuilder.group({
     PhoneNumber: ['', Validators.required],
     Password: ['', Validators.required]
-  });;
+  });
 
   constructor(
     private formBuilder: FormBuilder,

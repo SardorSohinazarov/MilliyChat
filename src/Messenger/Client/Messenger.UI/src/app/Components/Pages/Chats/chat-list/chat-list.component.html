@@ -2,11 +2,11 @@
     <ul>
         @for (chat of chats; track chat.id) {
             <li class="border-b border:gray-100 dark:border-gray-600">
-                <a [routerLink]="['/chats',chat.id]" class="flex items-center justify-center w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+                <a [routerLink]="['/chats',chat.id]" class="flex items-center w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
                     <img class="me-3 rounded-full w-11 h-11" src="https://media.licdn.com/dms/image/D4D03AQFmWv4Bx4kB5Q/profile-displayphoto-shrink_800_800/0/1684305519369?e=2147483647&v=beta&t=2kshdwvT_DCbyxIyHkP6pJJH8fYB_MvW6NyEJ8PeCDE" alt="Jese Leos Avatar">
                     <div>
                         @if(chat.type == 0){
-                            <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">{{chat.title}}</span>Sardor: "Hey, what's up? All set for the presentation?"</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">{{chat.title}}</span></p>
                             <span class="text-xs text-blue-600 dark:text-blue-500">a few moments ago</span>
                         }@else if (chat.type == 1) {
                             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -17,7 +17,6 @@
                                       
                                     {{chat.title}}
                                 </span>
-                                Sardor: "Hey, what's up? All set for the presentation?"
                             </p>
                             <span class="text-xs text-blue-600 dark:text-blue-500">a few moments ago</span>
                         }@else if (chat.type ==2) {
@@ -28,7 +27,7 @@
                                     </svg>
                                       
                                     {{chat.title}}
-                                </span>Sardor: "Hey, what's up? All set for the presentation?"
+                                </span>
                             </p>
                             <span class="text-xs text-blue-600 dark:text-blue-500">a few moments ago</span>
                         }

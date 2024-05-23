@@ -1,4 +1,4 @@
-import { Chat } from "../chat";
+import { Chat } from "../Chat/chat";
 
 export interface UserProfileViewModel {
     id:number,
