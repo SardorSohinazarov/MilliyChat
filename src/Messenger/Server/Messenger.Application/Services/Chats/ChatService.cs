@@ -164,16 +164,38 @@ namespace Messenger.Application.Services.Chats
 
         public async ValueTask<Guid> CreateGroupChatAsync(GroupChatCreationDTO groupChatCreationDTO)
         {
-            return await CreateChatAsync(
+            var chatId = await CreateChatAsync(
                 chatType: ChatType.Group,
                 title: groupChatCreationDTO.title);
+
+            return await CreateChatUser(chatId);
+        }
+
+        private async ValueTask<Guid> CreateChatUser(Guid chatId)
+        {
+            try
+            {
+                await _chatUserRepository.InsertAsync(new ChatUser()
+                {
+                    ChatId = chatId,
+                    UserId = GetUserIdFromHttpContext(),
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Chatga ownerni biriktirishda:" + ex.Message);
+            }
+
+            return chatId;
         }
 
         public async ValueTask<Guid> CreateChannelChatAsync(ChannelChatCreationDTO channelChatCreationDTO)
         {
-            return await CreateChatAsync(
+            var chatId = await CreateChatAsync(
                 chatType: ChatType.Channel,
                 title: channelChatCreationDTO.title);
+
+            return await CreateChatUser(chatId);
         }
 
         public async ValueTask<ChatViewModel> ClearChatMessagesAsync(Guid chatId)
