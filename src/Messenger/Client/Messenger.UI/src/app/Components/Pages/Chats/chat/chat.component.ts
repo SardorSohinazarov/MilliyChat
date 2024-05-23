@@ -8,7 +8,7 @@ import { MessageCreationDTO } from '../../../../Interfaces/Message/message-creat
 import { AuthService } from '../../../../Services/AuthServices/auth.service';
 import { TextMessageComponent } from '../../../Messages/text-message/text-message.component';
 import { UserViewModel } from '../../../../Interfaces/Users/user-view-model';
-import { Chat } from '../../../../Interfaces/chat';
+import { Chat } from '../../../../Interfaces/Chat/chat';
 import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.service';
 import { error } from 'console';
 

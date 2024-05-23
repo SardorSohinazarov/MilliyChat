@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Chat } from '../../Interfaces/chat';
+import { Chat } from '../../Interfaces/Chat/chat';
 import { get } from 'http';
+import { ChannelChatCreationDTO } from '../../Interfaces/Chat/channel-chat-creation-dto';
+import { GroupChatCreationDTO } from '../../Interfaces/Chat/group-chat-creation-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +24,13 @@ export class ChatAPIService {
 
   getOrCreateJoinChat(userId:number){
     return this.http.get<string>(`${this.apiUrl}/get-create-join/${userId}`);
+  }
+
+  createChannel(channelChatCreationDTO:ChannelChatCreationDTO){
+    return this.http.post<string>(`${this.apiUrl}/create-channel`,channelChatCreationDTO);
+  }
+
+  createGroup(groupChatCreationDTO:GroupChatCreationDTO){
+    return this.http.post<string>(`${this.apiUrl}/create-group`,groupChatCreationDTO);
   }
 }
