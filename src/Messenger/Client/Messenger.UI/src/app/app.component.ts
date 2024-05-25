@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
-import { NavbarComponent } from './Components/navbar/navbar.component';
+import { NavbarComponent } from './Components/Navbars/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',

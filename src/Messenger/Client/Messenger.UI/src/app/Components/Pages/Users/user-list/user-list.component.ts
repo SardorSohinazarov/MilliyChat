@@ -3,11 +3,15 @@ import { UserAPIService } from '../../../../Services/UserAPIServices/user-api.se
 import { UserViewModel } from '../../../../Interfaces/Users/user-view-model';
 import { error } from 'console';
 import { RouterLink } from '@angular/router';
+import { NavbarComponent } from '../../../Navbars/navbar/navbar.component';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [
+    RouterLink,
+    NavbarComponent
+  ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })

@@ -2,15 +2,12 @@ import { Routes } from '@angular/router';
 import { ChatComponent } from './Components/Pages/Chats/chat/chat.component';
 import { LoginComponent } from './Components/Pages/auth/login/login.component';
 import { RegisterComponent } from './Components/Pages/auth/register/register.component';
-import path from 'path';
-import { title } from 'process';
-import { combineLatest } from 'rxjs';
 import { ChatListComponent } from './Components/Pages/Chats/chat-list/chat-list.component';
 import { UserListComponent } from './Components/Pages/Users/user-list/user-list.component';
 import { UserProfileComponent } from './Components/Pages/Users/user-profile/user-profile.component';
 import { CreateGroupComponent } from './Components/Pages/Chats/create-group/create-group.component';
 import { CreateChannelComponent } from './Components/Pages/Chats/create-channel/create-channel.component';
-import { ProfileComponent } from './Components/Pages/profile/profile.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const projectName:string = 'Milliy chat';
 export const routes: Routes = [

@@ -11,13 +11,16 @@ import { UserViewModel } from '../../../../Interfaces/Users/user-view-model';
 import { Chat } from '../../../../Interfaces/Chat/chat';
 import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.service';
 import { error } from 'console';
+import { NavbarComponent } from '../../../Navbars/navbar/navbar.component';
+import { ChatNavbarComponent } from '../../../Navbars/chat-navbar/chat-navbar.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
   imports: [
     FormsModule,
-    TextMessageComponent
+    TextMessageComponent,
+    ChatNavbarComponent
   ],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
@@ -58,6 +61,8 @@ export class ChatComponent implements OnInit {
     this.connection.on('ReceiveMessage', (message) => {
       console.log("message keldi:" + message);
       this.messages.push(message);
+
+      this.scrollFunction();
     });
 
     try {
@@ -66,6 +71,14 @@ export class ChatComponent implements OnInit {
     } catch (error) {
       console.error('Failed to connect to SignalR hub', error);
     }
+  }
+
+  scrollFunction() {
+    const item = document.querySelector("body") as HTMLElement;
+    console.dir(item);
+
+    setTimeout(() => window.scrollTo(0,item.scrollHeight + 30),1
+    );
   }
 
   loadUser(): void {

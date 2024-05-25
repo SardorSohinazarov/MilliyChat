@@ -3,12 +3,14 @@ import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.se
 import { Chat } from '../../../../Interfaces/Chat/chat';
 import { error } from 'console';
 import { RouterLink } from '@angular/router';
+import { NavbarComponent } from '../../../Navbars/navbar/navbar.component';
 
 @Component({
   selector: 'app-chat-list',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    NavbarComponent
   ],
   templateUrl: './chat-list.component.html',
   styleUrl: './chat-list.component.scss'
