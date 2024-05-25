@@ -6,6 +6,7 @@ using Messenger.Application.ViewModels;
 using Messenger.Domain.Entities;
 using Messenger.Domain.Exceptions;
 using Messenger.Infrastructure.Repositories.Messages;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,23 +16,29 @@ namespace Messenger.Application.Services.Messages
     {
         private readonly IMessageRepository _messageRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public MessageService(
             IMessageRepository messageRepository,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment webHostEnvironment)
         {
             _messageRepository = messageRepository;
             _httpContextAccessor = httpContextAccessor;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async ValueTask<MessageViewModel> CreateMessageAsync(MessageCreationDTO messageCreationDTO)
         {
+            var filePath = await UploadFileIfItIsNotNullAsync(messageCreationDTO.MediaFile);
+
             var message = new Message()
             {
                 SenderId = messageCreationDTO.SenderId,
                 ChatId = messageCreationDTO.ChatId,
                 Text = messageCreationDTO.Text,
                 ParentId = messageCreationDTO.ParentId,
+                FilePath = filePath,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -49,6 +56,23 @@ namespace Messenger.Application.Services.Messages
                 includes: new string[] { nameof(Message.Parent), nameof(Message.Sender) });
 
             return message.ToMessageViewModel();
+        }
+
+        private async ValueTask<string> UploadFileIfItIsNotNullAsync(IFormFile? mediaFile)
+        {
+            if (mediaFile is null)
+                return null;
+
+            var fileName = Guid.NewGuid().ToString() + "." + Path.GetExtension(mediaFile.FileName);
+
+            var fullPath = Path.Combine(_webHostEnvironment.ContentRootPath, fileName);
+
+            using (var stream = File.OpenRead(fullPath))
+            {
+                await mediaFile.CopyToAsync(stream);
+            }
+
+            return fileName;
         }
 
         public ValueTask<MessageViewModel> ModifyMessageAsync(MessageModificationDTO messageModificationDTO)

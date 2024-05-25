@@ -7,10 +7,11 @@ import { UserListComponent } from './Components/Pages/Users/user-list/user-list.
 import { UserProfileComponent } from './Components/Pages/Users/user-profile/user-profile.component';
 import { CreateGroupComponent } from './Components/Pages/Chats/create-group/create-group.component';
 import { CreateChannelComponent } from './Components/Pages/Chats/create-channel/create-channel.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './Components/Pages/profile/profile.component';
 
 const projectName:string = 'Milliy chat';
 export const routes: Routes = [
+    {path:'',redirectTo:'/auth/login',pathMatch:'full'},
     {
         path:'auth',
         title:`Authorization | ${projectName}`,
@@ -40,6 +41,5 @@ export const routes: Routes = [
         ]
     },
     {path:'profile',title:`Profile | ${projectName}`,component:ProfileComponent},
-    {path:'',redirectTo:'/chats',pathMatch:'full'},
-    {path:'**',redirectTo:'/chats',pathMatch:'full'}
+    {path:'**',redirectTo:'/auth/login',pathMatch:'full'}
 ];

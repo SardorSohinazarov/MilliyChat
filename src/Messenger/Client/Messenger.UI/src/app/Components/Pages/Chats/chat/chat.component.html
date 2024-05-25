@@ -1,4 +1,4 @@
-<app-chat-navbar [chatTitle]="chat.title"></app-chat-navbar>
+<app-chat-navbar [chatTitle]="chat.title == null?'Personal chat':chat.title"></app-chat-navbar>
 
 <div>
   <div class="items-container">

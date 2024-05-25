@@ -59,7 +59,6 @@ export class ChatComponent implements OnInit {
     this.getMessages();
 
     this.connection.on('ReceiveMessage', (message) => {
-      console.log("message keldi:" + message);
       this.messages.push(message);
 
       this.scrollFunction();
@@ -75,7 +74,6 @@ export class ChatComponent implements OnInit {
 
   scrollFunction() {
     const item = document.querySelector("body") as HTMLElement;
-    console.dir(item);
 
     setTimeout(() => window.scrollTo(0,item.scrollHeight + 30),1
     );
@@ -104,6 +102,7 @@ export class ChatComponent implements OnInit {
   getChat(){
     this.chatAPIService.getChat(this.chatId).subscribe(
       (result:Chat)=>{
+        console.log(result);
         this.chat = result;
       },
       error =>{

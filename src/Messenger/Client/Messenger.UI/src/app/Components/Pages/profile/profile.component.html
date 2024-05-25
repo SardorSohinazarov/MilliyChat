@@ -1,0 +1,38 @@
+<p>{{userProfile.firstName}}-{{userProfile.lastName}}</p>
+<p>{{userProfile.phoneNumber}}</p>
+<p>{{userProfile.email}}</p>
+<p>{{userProfile.photoPath}}</p>
+<p>{{userProfile.userName}}</p>
+<p>{{userProfile.createdAt}}</p>
+
+<input type="file" class="file-input" (change)="onChange($event)" #fileUpload />
+
+@if(file){
+    <div>
+        <section class="file-info">
+            File details:
+            <ul>
+                <li>Name: {{file.name}}</li>
+                <li>Type: {{file.type}}</li>
+                <li>Size: {{file.size}} bytes</li>
+    </ul>
+  </section>
+  
+  <button (click)="onUpload()">Upload the file</button>
+  
+    @switch (status) {
+        @case('uploading'){
+            <p>⏳ Uploading...</p>
+        }
+        @case('success'){
+            <p>✅ Done!</p>
+        }
+        @case('fail'){
+            <p>❌ Error!</p>
+        }
+        @default{
+            <p>😶 Waiting to upload...</p>
+        }
+    }
+</div>
+}

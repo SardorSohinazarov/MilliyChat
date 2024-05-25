@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../Services/AuthServices/auth.service';
 import { UserAPIService } from '../../../../Services/UserAPIServices/user-api.service';
+import { Init } from 'node:v8';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ import { UserAPIService } from '../../../../Services/UserAPIServices/user-api.se
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   registerForm: FormGroup = this.formBuilder.group({
     PhoneNumber: ['', Validators.required],
     Password: ['', Validators.required],
@@ -29,6 +30,12 @@ export class RegisterComponent {
     private userService:UserAPIService,
     private router:Router
   ) { }
+  
+  ngOnInit(): void {
+    if(this.authService.isLoggedIn()){
+      this.router.navigate(['/chats'])
+    }
+  }
 
   onSubmit(): void {
     if (this.registerForm.invalid) {

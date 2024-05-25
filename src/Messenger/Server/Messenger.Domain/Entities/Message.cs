@@ -8,6 +8,7 @@ namespace Messenger.Domain.Entities
         public Guid? ParentId { get; set; }
         public long SenderId { get; set; }
         public Guid ChatId { get; set; }
+        public string? FilePath { get; set; }
 
         public virtual Chat Chat { get; set; }
         public virtual User Sender { get; set; }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../Services/AuthServices/auth.service';
@@ -15,7 +15,7 @@ import { UserAPIService } from '../../../../Services/UserAPIServices/user-api.se
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   loginForm: FormGroup = this.formBuilder.group({
     PhoneNumber: ['', Validators.required],
     Password: ['', Validators.required]
@@ -27,6 +27,12 @@ export class LoginComponent {
     private userService:UserAPIService,
     private router:Router
   ) { }
+
+  ngOnInit(): void {
+    if(this.authService.isLoggedIn()){
+      this.router.navigate(['/chats'])
+    }
+  }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
