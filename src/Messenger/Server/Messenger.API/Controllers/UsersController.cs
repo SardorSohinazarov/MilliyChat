@@ -34,5 +34,11 @@ namespace Messenger.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUserAsync(long userId)
             => Ok();
+
+        [HttpPost("upload-profile-image")]
+        public async Task<IActionResult> UploadProfileImage([FromForm] IFormFile file)
+        {
+            return Ok(await _userService.UploadProfileImageAsync(file));
+        }
     }
 }

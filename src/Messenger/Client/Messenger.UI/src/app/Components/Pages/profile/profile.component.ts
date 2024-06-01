@@ -5,6 +5,8 @@ import { UserViewModel } from '../../../Interfaces/Users/user-view-model';
 import { error } from 'console';
 import { FormBuilder, FormControlName, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@microsoft/signalr';
+import { HttpEventType } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +19,8 @@ import { HttpClient } from '@microsoft/signalr';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit{
+  private apiUrl = environment.apiUrl;
+
   userProfile!:UserProfileViewModel;
   userId!:number;
 
@@ -26,8 +30,7 @@ export class ProfileComponent implements OnInit{
 
   constructor(
     private userAPIService:UserAPIService,
-    private formBuilder:FormBuilder,
-    private http:HttpClient
+    private formBuilder:FormBuilder
   ){}
 
   ngOnInit(): void {
@@ -52,39 +55,30 @@ export class ProfileComponent implements OnInit{
     )
   }
 
-  status: "initial" | "uploading" | "success" | "fail" = "initial"; // Variable to store file status
-  file: File | null = null; // Variable to store file
+  selectedFile!: File;
+  uploadedImagePath!: string;
 
-  // On file Select
-  onChange(event: any) {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.status = "initial";
-      this.file = file;
-    }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 
-  onUpload() {
-    // // we will implement this method later
-    // if (this.file) {
-    //   const formData = new FormData();
-  
-    //   formData.append('file', this.file, this.file.name);
-  
-    //   const upload$ = this.http.post("https://httpbin.org/post", formData);
-  
-    //   this.status = 'uploading';
-  
-    //   upload$.subscribe({
-    //     next: () => {
-    //       this.status = 'success';
-    //     },
-    //     error: (error: any) => {
-    //       this.status = 'fail';
-    //       console.log(error.message);
-    //     },
-    //   });
-    // }
+  onSubmit() {
+    if (!this.selectedFile) {
+      return;
+    }
+
+    this.userAPIService.onSubmit(this.selectedFile)?.subscribe(
+      (response:string) => {
+        console.log(response);
+        this.uploadedImagePath = response;
+      },
+      error => {
+        console.log('Upload error:', error.message);
+      }
+    );
+  }
+
+  getPhotoFullPath(){
+    return this.apiUrl +this.userProfile.photoPath;
   }
 }

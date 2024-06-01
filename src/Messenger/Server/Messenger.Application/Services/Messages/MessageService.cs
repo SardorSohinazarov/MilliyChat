@@ -101,6 +101,7 @@ namespace Messenger.Application.Services.Messages
         }
 
         public List<MessageViewModel> RetrieveMessagesByChatId(QueryParameter queryParameter, Guid chatId)
+
         {
             var messages = _messageRepository.SelectAll()
                 .Include(x => x.Sender)

@@ -13,6 +13,7 @@ import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.se
 import { error } from 'console';
 import { NavbarComponent } from '../../../Navbars/navbar/navbar.component';
 import { ChatNavbarComponent } from '../../../Navbars/chat-navbar/chat-navbar.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-chat',

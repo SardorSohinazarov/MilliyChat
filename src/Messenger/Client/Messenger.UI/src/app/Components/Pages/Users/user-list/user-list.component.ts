@@ -4,6 +4,7 @@ import { UserViewModel } from '../../../../Interfaces/Users/user-view-model';
 import { error } from 'console';
 import { RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../../Navbars/navbar/navbar.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-user-list',
@@ -32,6 +33,15 @@ export class UserListComponent implements OnInit{
         console.log('Userlarni yuklashda xatolik:' + error.Message);
       }
     )
+  }
+
+  getProfilePhotoFullPath(path:any){
+    if(path == null){
+      return 'https://freesvg.org/img/abstract-user-flat-4.png';
+    }
+    else{
+      return environment.apiUrl + path;
+    }
   }
 
 }

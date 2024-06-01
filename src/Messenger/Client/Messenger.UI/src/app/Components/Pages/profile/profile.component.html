@@ -5,34 +5,15 @@
 <p>{{userProfile.userName}}</p>
 <p>{{userProfile.createdAt}}</p>
 
-<input type="file" class="file-input" (change)="onChange($event)" #fileUpload />
+<div class="container">
+  <h2>Upload Profile Image</h2>
+  <form (submit)="onSubmit()">
+    <input type="file" (change)="onFileSelected($event)" />
+    <button type="submit">Upload</button>
+  </form>
+  @if(userProfile.photoPath){
+    <p>Image uploaded to: {{ userProfile.photoPath }}</p>
 
-@if(file){
-    <div>
-        <section class="file-info">
-            File details:
-            <ul>
-                <li>Name: {{file.name}}</li>
-                <li>Type: {{file.type}}</li>
-                <li>Size: {{file.size}} bytes</li>
-    </ul>
-  </section>
-  
-  <button (click)="onUpload()">Upload the file</button>
-  
-    @switch (status) {
-        @case('uploading'){
-            <p>⏳ Uploading...</p>
-        }
-        @case('success'){
-            <p>✅ Done!</p>
-        }
-        @case('fail'){
-            <p>❌ Error!</p>
-        }
-        @default{
-            <p>😶 Waiting to upload...</p>
-        }
-    }
+    <img style="width: 200px; border-radius: 50%;" src={{getPhotoFullPath()}}>
+  }
 </div>
-}

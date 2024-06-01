@@ -5,6 +5,7 @@ import { error } from 'console';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ChatAPIService } from '../../../../Services/ChatAPIServices/chat-api.service';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -54,5 +55,14 @@ export class UserProfileComponent implements OnInit {
         console.log(error.message)
       }
     )
+  }
+
+  getProfilePhotoFullPath(){
+    if(this.userProfile.photoPath == null){
+      return 'https://freesvg.org/img/abstract-user-flat-4.png';
+    }
+    else{
+      return environment.apiUrl + this.userProfile.photoPath;
+    }
   }
 }

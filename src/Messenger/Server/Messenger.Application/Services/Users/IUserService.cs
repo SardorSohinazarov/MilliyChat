@@ -1,6 +1,7 @@
 ﻿using Messenger.Application.DataTransferObjects.Users;
 using Messenger.Application.Models;
 using Messenger.Application.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace Messenger.Application.Services.Users
 {
@@ -12,5 +13,6 @@ namespace Messenger.Application.Services.Users
         ValueTask<UserViewModel> RetrieveUserByIdAsync();
         ValueTask<UserViewModel> ModifyUserAsync(UserModificationDTO userModificationDTO);
         ValueTask<UserViewModel> RemoveUserAsync(long userId);
+        ValueTask<string> UploadProfileImageAsync(IFormFile formFile);
     }
 }

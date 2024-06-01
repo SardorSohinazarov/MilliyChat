@@ -6,6 +6,7 @@ using Messenger.Application.ViewModels;
 using Messenger.Domain.Entities;
 using Messenger.Domain.Exceptions;
 using Messenger.Infrastructure.Repositories.Users;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -16,11 +17,16 @@ namespace Messenger.Application.Services.Users
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public UserService(
+            IUserRepository userRepository,
+            IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public ValueTask<UserViewModel> ModifyUserAsync(UserModificationDTO userModificationDTO)
@@ -96,6 +102,35 @@ namespace Messenger.Application.Services.Users
                 throw new ValidationException("Can not get userId from HttpContext");
 
             return long.Parse(stringValue);
+        }
+
+        public async ValueTask<string> UploadProfileImageAsync(IFormFile formFile)
+        {
+            var userId = GetUserIdFromHttpContext();
+            var user = await _userRepository.SelectByIdAsync(userId);
+
+            try
+            {
+                var fileName = Path.Combine(
+                    "profile-images",
+                    Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName));
+
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+                user.PhotoPath = fileName.Replace(@"\", @"/");
+                await _userRepository.SaveChangesAsync();
+
+                return fileName;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception on Profile image uploading", ex);
+            }
         }
     }
 }

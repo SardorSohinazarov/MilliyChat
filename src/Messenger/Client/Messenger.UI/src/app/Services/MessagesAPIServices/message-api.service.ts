@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageDTO } from '../../Interfaces/Message/message-dto';
 import { MessageCreationDTO } from '../../Interfaces/Message/message-creation-dto';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageAPIService {
-
-  private apiUrl = 'https://localhost:7031/api/messages';
+  private apiUrl = `${environment.apiUrl}api/messages`;
 
   constructor(private http: HttpClient) {}
 

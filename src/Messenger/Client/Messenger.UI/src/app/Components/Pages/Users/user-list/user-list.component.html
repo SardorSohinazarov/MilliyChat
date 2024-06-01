@@ -5,7 +5,7 @@
         @for (user of users; track user.id) {
             <li class="border-b border:gray-100 dark:border-gray-600">
                 <a [routerLink]="['/users',user.id]" class="flex items-center  w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <img class="me-3 rounded-full w-11 h-11" src="https://freesvg.org/img/abstract-user-flat-4.png" alt="Jese Leos Avatar">
+                    <img class="me-3 rounded-full w-11 h-11 object-cover" src={{getProfilePhotoFullPath(user.photoPath)}} alt="Jese Leos Avatar">
                     <div>
                         <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">{{user.firstName}} {{user.lastName}}</span></p>
                         <span class="text-xs text-blue-600 dark:text-blue-500">a few moments ago</span>

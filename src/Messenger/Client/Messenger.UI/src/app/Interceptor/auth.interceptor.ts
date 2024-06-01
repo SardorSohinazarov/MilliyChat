@@ -37,8 +37,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               }),
               catchError((err) =>{
                 return throwError(()=>{
-                  alert("Token expired")
-                  router.navigate(['/login'])
+                  alert("Token expired");
+                  window.localStorage.clear();
+                  router.navigate(['/auth/login'])
                 })
               })
             )
