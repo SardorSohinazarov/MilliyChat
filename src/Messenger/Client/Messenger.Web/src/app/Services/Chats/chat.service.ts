@@ -19,7 +19,7 @@ export class ChatService {
   }
 
   getUserChats(pageIndex:number = 1){
-    return this.http.get<Chat[]>(`${this.apiUrl}/user-active-chats?Page.Index=${pageIndex}&Page.Size=2`)
+    return this.http.get<Chat[]>(`${this.apiUrl}/user-active-chats?Page.Index=${pageIndex}`)
   }
 
   createChannel(channelChatCreationDTO:ChannelChatCreationDTO){

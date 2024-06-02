@@ -57,8 +57,6 @@ export class ChatListComponent implements OnInit{
         this.list = this.list.concat(res);
         // this.list = [...this.list, ...res];
         this.loadingMore = false;
-
-        console.log(this.list);
       });
   }
 }
