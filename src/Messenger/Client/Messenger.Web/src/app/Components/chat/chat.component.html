@@ -1,2 +1,5 @@
-<p>chat works!</p>
-<p>chatId: {{chatId}}</p>
+<div class="scrollable-container">
+    @for (message of messages; track message.id) {
+        <h1>message.text</h1>
+    }
+</div>

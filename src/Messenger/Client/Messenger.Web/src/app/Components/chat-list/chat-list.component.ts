@@ -49,14 +49,17 @@ export class ChatListComponent implements OnInit{
   onLoadMore(): void {
     this.loadingMore = true;
 
-    this.chatService.getUserChats(++this.pageIndex)
+    this.chatService.getUserChats(this.pageIndex + 1)
       .pipe(
         catchError(() => of([]))
       )
       .subscribe((res: Chat[]) => {
-        this.list = this.list.concat(res);
-        // this.list = [...this.list, ...res];
-        this.loadingMore = false;
+        if(res.length == 10){
+          this.pageIndex ++;
+          this.list = this.list.concat(res);
+        }
+          // this.list = [...this.list, ...res];
+          this.loadingMore = false;
       });
   }
 }
