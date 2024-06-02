@@ -1,0 +1,19 @@
+<div class="home" nz-row>
+    <div
+      class="col"
+      nz-col
+      nz-resizable
+      (nzResize)="onResize($event)"
+      [nzMinColumn]="3"
+      [nzMaxColumn]="20"
+      [nzGridColumnCount]="24"
+      [nzSpan]="col"
+    >
+      <nz-resize-handles [nzDirections]="directions"></nz-resize-handles>
+
+      <app-chat-list></app-chat-list>
+    </div>
+    <div class="col right" nz-col [nzSpan]="24 - col">
+        <router-outlet></router-outlet>
+    </div>
+  </div>

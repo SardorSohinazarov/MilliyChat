@@ -10,7 +10,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const myToken = authService.getAccessToken();
   console.log(myToken)
-  const router = inject(Router)
+  const router = inject(Router);
+
+  console.log(req.url);
 
   if(myToken){
     req = req.clone({
