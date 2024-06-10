@@ -1,4 +1,35 @@
 .scrollable-container {
     height: 100vh;
     overflow-y: auto;
-  }
+}
+
+
+.chat-container {
+    position: relative;
+    /* Sizning containeringizning boshqa uslublari bo'lishi mumkin */
+}
+
+.sender {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f8f8; /* Or any other background color you prefer */
+    padding: 10px; /* Optional, for spacing */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional, for shadow effect */
+}
+
+.items-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.items-container input[type="text"] {
+    flex-grow: 1;
+    margin-right: 8px; /* Or any other margin you prefer */
+}
+
+.items-container button {
+    flex-shrink: 0;
+}

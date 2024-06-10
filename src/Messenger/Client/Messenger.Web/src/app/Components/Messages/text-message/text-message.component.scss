@@ -1,0 +1,43 @@
+/* Umumiy styling */
+.message {
+    display: flex;
+    margin: 10px 10px;
+}
+
+  .text-message{
+    max-width: 70%;
+    
+    color: #333;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  /* Chap tarafdagi xabarlar */
+  .left-message {
+    align-self: flex-start;
+    background-color: #f1f1f1;
+    margin-left: 0;
+  }
+  
+  /* O'ng tarafdagi xabarlar */
+  .right-message {
+    align-self: flex-end;
+    background-color: #4caf50;
+    margin-left: auto;
+  }
+  
+  /* Xabar yuboruvchining ismi */
+  .message-sender-name {
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  /* Xabar matni */
+  .message-text {
+    font-size: 1.1em;
+    margin: 0;
+    white-space: pre-wrap; /* Bu xabarni yoping, agarda matnda yangi qator bo'lsa */
+  }
+  

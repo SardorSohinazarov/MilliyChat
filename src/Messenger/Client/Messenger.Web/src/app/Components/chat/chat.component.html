@@ -1,5 +1,18 @@
-<div class="scrollable-container">
-    @for (message of messages; track message.id) {
-        <h1>message.text</h1>
-    }
+<div class="chat-body">
+    <div class="scrollable-container">
+        @for (message of messages; track message.id) {
+            <app-text-message [message]="message" [isMine]="userInfo?.id==message.sender?.id?true:false"></app-text-message>
+        }
+        @empty {
+            <h1>There is anything</h1>
+        }
+    </div>
+
+    <div class="sender">
+        <form class="items-container" (ngSubmit)="sendMessage()">
+            <input type="text" [(ngModel)]="inputText" name="message" id="chat" placeholder="Your message...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    
 </div>

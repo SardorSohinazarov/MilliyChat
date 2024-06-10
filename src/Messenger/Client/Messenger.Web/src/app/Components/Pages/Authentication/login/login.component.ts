@@ -8,6 +8,7 @@ import { AuthService } from '../../../../Services/Auth/auth.service';
 import { TokenDTO } from '../../../../Models/Auth/token-dto';
 import { error } from 'console';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { UserService } from '../../../../Services/Users/user.service';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +35,16 @@ export class LoginComponent {
       this.authService.login(this.validateForm.value).subscribe(
         (response:TokenDTO)=>{
           this.authService.storeToken(response);
+
+          this.userService.getUserInfoFromAPI().subscribe({
+            next: userInfo => {
+              localStorage.setItem('userProfile', JSON.stringify(userInfo));
+              this.router.navigate(['/chats']);
+            },
+            error: error => {
+              console.error('Profil ma\'lumotlarini olishda xato:', error);
+            }
+          });
           
           this.router.navigate(['/chats']);
         },
@@ -55,6 +66,7 @@ export class LoginComponent {
   constructor(
     private fb: NonNullableFormBuilder,
     private authService:AuthService,
+    private userService:UserService,
     private router:Router
   ) {}
 }

@@ -1,0 +1,13 @@
+<div class="message">
+    @if(!isMine){
+        <div class="text-message left-message">
+            <span class="message-sender-name">{{message.sender?.firstName}} {{message.sender?.lastName}}</span>
+            <h1 class="message-text">{{message.text}}</h1>
+        </div>
+    }
+    @else{
+        <div class="text-message right-message">
+            <h1 class="message-text">{{message.text}}</h1>
+        </div>
+    }
+</div>

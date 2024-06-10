@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { error } from 'console';
@@ -10,12 +10,15 @@ import { ChatService } from '../../Services/Chats/chat.service';
 import { AuthService } from '../../Services/Auth/auth.service';
 import { UserViewModel } from '../../Models/Users/user-view-model';
 import { MessageCreationDTO } from '../../Models/Messages/message-creation-dto';
+import { TextMessageComponent } from '../Messages/text-message/text-message.component';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
   imports: [
-    
+    FormsModule,
+    TextMessageComponent
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
@@ -35,7 +38,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     private authService: AuthService
   ) {
     this.connection = new HubConnectionBuilder()
-      .withUrl('https://localhost:7031/chathub',
+      .withUrl(`${environment.apiUrl}chathub`,
         {
           accessTokenFactory: () => this.authService.getAccessToken()!
         })
@@ -80,7 +83,7 @@ export class ChatComponent implements OnInit, OnDestroy{
   }
 
   scrollFunction() {
-    const item = document.querySelector("body") as HTMLElement;
+    const item = document.querySelector(".chat-body") as HTMLElement;
 
     setTimeout(() => window.scrollTo(0,item.scrollHeight + 30),1
     );
